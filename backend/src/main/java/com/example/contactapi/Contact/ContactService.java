@@ -28,11 +28,11 @@ public class ContactService {
     private final ContactRepository contactRepository;
 
     public Page<Contact> getAllContact(int page, int size){
-        return contactRepository.findAll(PageRequest.of(size,page,Sort.by("name")));
+        return contactRepository.findAll(PageRequest.of(page, size, Sort.by("name")));
     }
 
     public Contact getContact(String id){
-        return contactRepository.findByID(id).orElseThrow(() -> new RuntimeException("Contact not found"));
+        return contactRepository.findById(id).orElseThrow(() -> new RuntimeException("Contact not found"));
     }
 
     public Contact createContact(Contact contact){
@@ -71,5 +71,5 @@ public class ContactService {
         }catch(Exception e){
             throw new RuntimeException("Unable to save image.");
         }
-    }
+    };
 }
