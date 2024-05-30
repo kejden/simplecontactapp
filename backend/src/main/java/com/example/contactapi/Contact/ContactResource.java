@@ -55,7 +55,7 @@ public class ContactResource {
         return ResponseEntity.ok().body(contactService.uploadPhoto(id, photo));
     }
 
-    @GetMapping(path="/photo/{filename}", produces=IMAGE_PNG_VALUE)
+    @GetMapping(path="/image/{filename}", produces=IMAGE_PNG_VALUE)
     public byte[] getPhoto(@PathVariable("filename") String fileName) throws IOException {
         return Files.readAllBytes(Paths.get(PHOTO_DIR + fileName));
     }
