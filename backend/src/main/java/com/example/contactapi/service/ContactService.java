@@ -27,6 +27,7 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 @Transactional(rollbackOn = Exception.class)
 @RequiredArgsConstructor
 public class ContactService {
+
     private final ContactRepository contactRepository;
 
     public Page<Contact> getAllContact(int page, int size){
