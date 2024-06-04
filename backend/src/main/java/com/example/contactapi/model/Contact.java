@@ -1,4 +1,4 @@
-package com.example.contactapi.Contact;
+package com.example.contactapi.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Column;
@@ -10,8 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.UuidGenerator;
-
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_DEFAULT;
 
 @Entity
 @Getter

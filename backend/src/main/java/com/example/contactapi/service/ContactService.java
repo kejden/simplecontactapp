@@ -1,5 +1,7 @@
-package com.example.contactapi.Contact;
+package com.example.contactapi.service;
 
+import com.example.contactapi.model.Contact;
+import com.example.contactapi.repository.ContactRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

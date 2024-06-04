@@ -1,9 +1,9 @@
-package com.example.contactapi.Contact;
+package com.example.contactapi.resource;
 
 
-import lombok.Getter;
+import com.example.contactapi.model.Contact;
+import com.example.contactapi.service.ContactService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

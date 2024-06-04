@@ -1,4 +1,4 @@
-package com.example.contactapi.Config;
+package com.example.contactapi.config;
 
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.context.annotation.Bean;
