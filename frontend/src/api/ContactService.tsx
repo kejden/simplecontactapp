@@ -1,6 +1,7 @@
-import axios from "axios";
+import axios from 'axios';
 
-const API_URL = "http://127.0.0.1:8080/contacts";
+axios.defaults.baseURL = 'http://127.0.0.1:8080';
+axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
 
 interface Contact {
   id?: string;
@@ -15,29 +16,39 @@ interface Contact {
 }
 
 export async function saveContact(contact: Contact) {
-  return await axios.post(API_URL, contact);
+  return await axios.post('/contacts', contact);
 }
 
 export async function getContacts(page: number = 0, size: number = 10) {
-  return await axios.get(`${API_URL}?page=${page}&size=${size}`);
+  return await axios.get(`/contacts?page=${page}&size=${size}`);
 }
 
 export async function getContact(id: string) {
-  return await axios.get(`${API_URL}/${id}`);
+  return await axios.get(`/contacts/${id}`);
 }
 
 export async function updateContact(contact: Contact) {
-  return await axios.post(API_URL, contact);
+  return await axios.post('/contacts', contact);
 }
 
 export async function deleteContact(id: string) {
-  return await axios.delete(`${API_URL}/${id}`);
+  return await axios.delete(`/contacts/${id}`);
 }
 
 export async function updatePhoto(formData: FormData) {
-  return await axios.put(`${API_URL}/photo`, formData, {
+  return await axios.put('/contacts/photo', formData, {
     headers: {
-      "Content-Type": "multipart/form-data",
+      'Content-Type': 'multipart/form-data',
     },
   });
+}
+
+export async function loginUser(username: string, password: string) {
+  const response = await axios.post('/auth/login', { username, password });
+  const token = response.data.token;
+  if (token) {
+    localStorage.setItem('token', token);
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  }
+  return response;
 }

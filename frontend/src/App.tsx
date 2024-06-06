@@ -3,6 +3,7 @@ import { getContacts, saveContact, updatePhoto } from "./api/ContactService";
 import Header from "./components/Header";
 import { Routes, Route, Navigate } from "react-router-dom";
 import ContactList from "./components/ContactList";
+import ContactDetail from "./components/ContactDetail";
 
 interface ContactData {
   totalElements: number;
@@ -15,7 +16,7 @@ interface ContactData {
   last: boolean;
   numberOfElements: number;
   pageable: any;
-}
+} 
 
 function App() {
   const modalRef = useRef<HTMLDialogElement>(null);
@@ -40,7 +41,7 @@ function App() {
       setCurrentPage(page);
       const { data } = await getContacts(page, size);
       setData(data);
-      console.log(data);
+      // console.log(data);
     } catch (error) {
       console.error(error);
     }
@@ -104,6 +105,25 @@ function App() {
     }
   };
 
+  const updateContact = async (contact: ContactData) => {
+    try{
+      const {data} = await saveContact(contact);
+      // console.log(data)
+    }catch(error){
+      console.error(error);
+    }
+  };
+
+  const updateImage = async (formData: FormData) => {
+    try {
+      // console.log("blebleble");
+      const { data:photoURL } = await updatePhoto(formData);
+      console.log(data)
+    } catch (error) {
+      console.error(error);
+    } 
+  };
+
   return (
     <>
       <Header toggleModal={toggleModal} numOfContacts={data.totalElements} />
@@ -118,6 +138,15 @@ function App() {
                   data={data}
                   currentPage={currentPage}
                   getAllContacts={getAllContacts}
+                />
+              }
+            />
+            <Route
+              path="/contacts/:id"
+              element={
+                <ContactDetail
+                updateContact = {updateContact} 
+                updateImage = {updateImage} 
                 />
               }
             />

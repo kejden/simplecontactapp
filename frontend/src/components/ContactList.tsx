@@ -1,9 +1,21 @@
 import React from "react";
 import Contact from "./Contact";
 
+interface ContactData {
+  id: string;
+  photoURL: string;
+  name: string;
+  title: string;
+  email: string;
+  address: string;
+  phone: string;
+  status: string;
+  [key: string]: any;
+}
+
 interface Props {
   data: {
-    content: { id: string; [key: string]: any }[];
+    content: ContactData[];
     totalPages: number;
   };
   currentPage: number;
