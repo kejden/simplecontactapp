@@ -5,7 +5,6 @@ import com.example.contactapi.dto.ContactDto;
 import com.example.contactapi.model.Contact;
 import com.example.contactapi.service.ContactService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +16,6 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Optional;
-import java.util.function.Function;
 
 import static com.example.contactapi.constant.Constant.PHOTO_DIR;
 import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;

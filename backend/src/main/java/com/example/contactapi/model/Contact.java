@@ -1,10 +1,7 @@
 package com.example.contactapi.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +17,7 @@ import org.hibernate.annotations.UuidGenerator;
 @Table(name="contacts")
 public class Contact {
     @Id
-    @UuidGenerator
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id", unique = true, updatable = false)
     private String id;
     private String name;
@@ -30,4 +27,8 @@ public class Contact {
     private String address;
     private String status;
     private String photoURL;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(referencedColumnName = "user_id", nullable = false)
+    private User user;
 }
