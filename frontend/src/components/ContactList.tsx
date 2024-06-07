@@ -1,5 +1,6 @@
 import React from "react";
 import Contact from "./Contact";
+import { useNavigate } from "react-router-dom";
 
 interface ContactData {
   id: string;
@@ -23,9 +24,10 @@ interface Props {
 }
 
 const ContactList = ({ data, currentPage, getAllContacts }: Props) => {
+
   return (
     <main className="main">
-      {data?.content?.length === 0 && (
+      {data?.content?.length === 0 && localStorage.getItem('user') &&(
         <div>No Contacts. Please add a new contact</div>
       )}
 

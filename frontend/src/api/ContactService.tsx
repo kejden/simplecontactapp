@@ -43,10 +43,26 @@ export async function updatePhoto(formData: FormData) {
   });
 }
 
+export async function registerUser(username: string, password: string) {
+    const response = await axios.post('/auth/register', { username, password }, {
+      headers: {
+        Authorization: ''
+      }
+    });
+    return response.data;
+}
+
 export async function loginUser(username: string, password: string) {
-  const response = await axios.post('/auth/login', { username, password });
-  const token = response.data.token;
-  if (token) {
+  const response = await axios.post('/auth/login', { username, password }, {
+    headers:{
+      Authorization:''
+    }
+  });
+  // console.log(response.data);
+  const user = response.data.user.username;
+  const token = response.data.jwt;
+  if (token) {  
+    localStorage.setItem('user', user);
     localStorage.setItem('token', token);
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   }

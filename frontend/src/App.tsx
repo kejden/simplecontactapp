@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { getContacts, saveContact, updatePhoto } from "./api/ContactService";
 import Header from "./components/Header";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, Location } from "react-router-dom";
 import ContactList from "./components/ContactList";
 import ContactDetail from "./components/ContactDetail";
+import Register from "./components/Register"
+import Login from "./components/Login"
 
 interface ContactData {
   totalElements: number;
@@ -124,12 +126,16 @@ function App() {
     } 
   };
 
+  
+
   return (
     <>
       <Header toggleModal={toggleModal} numOfContacts={data.totalElements} />
       <main>
         <div className="container">
           <Routes>
+            <Route path="/register" element={< Register />} />
+            <Route path="/login" element={< Login />}/>
             <Route path="/" element={<Navigate to={"contacts"} />} />
             <Route
               path="/contacts"
