@@ -2,8 +2,12 @@ package com.example.contactapi.controller;
 
 
 import com.example.contactapi.dto.ContactDto;
+import com.example.contactapi.dto.CreateContactDto;
 import com.example.contactapi.model.Contact;
+import com.example.contactapi.model.User;
+import com.example.contactapi.repository.ContactRepository;
 import com.example.contactapi.service.ContactService;
+import com.example.contactapi.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -28,25 +32,29 @@ public class ContactController {
     private final ModelMapper modelMapper;
 
     private final ContactService contactService;
+    private final UserService userService;
+    private final ContactRepository contactRepository;
 
     private ContactDto convertToDto(Contact contact) {
         return modelMapper.map(contact, ContactDto.class);
     }
 
     @PostMapping
-    public ResponseEntity<ContactDto> createContact(@RequestBody ContactDto contactDto){
-        Contact contactRequest = modelMapper.map(contactDto, Contact.class);
-        Contact contact = contactService.createContact(contactRequest);
-        ContactDto contactResponse  = modelMapper.map(contact, ContactDto.class);
-        return ResponseEntity.created(URI.create("/contacts/userID")).body(contactResponse);
+    public ResponseEntity<ContactDto> createContact(@RequestBody CreateContactDto createContactDto) {
+        User user = userService.findUserByUserName(createContactDto.getUsername());
+        Contact contactRequest = modelMapper.map(createContactDto.getContact(), Contact.class);
+        contactRequest.setUser(user);
+        Contact savedContact = contactRepository.save(contactRequest);
+        ContactDto contactResponse = modelMapper.map(savedContact, ContactDto.class);
+        return ResponseEntity.created(URI.create("/contacts/" + contactResponse.getId())).body(contactResponse);
     }
 
     @GetMapping()
-    public ResponseEntity<Page<ContactDto>> getContacts(@RequestParam(value = "page", defaultValue="0") int page,
-                                                     @RequestParam(value = "size", defaultValue = "10") int size){
-        Page<Contact> contacts = contactService.getAllContact(page, size);
-        Page<ContactDto> contactDtos = contacts.map(this::convertToDto);
-        return ResponseEntity.ok().body(contactDtos);
+    public ResponseEntity<Page<ContactDto>> getContacts(@RequestParam String userName,
+                                                        @RequestParam(defaultValue = "0") int page,
+                                                        @RequestParam(defaultValue = "10") int size){
+        Page<ContactDto> contacts =  contactService.getUsersContacts(userName, page, size);
+        return ResponseEntity.ok().body(contacts);
     }
 
     @GetMapping("/{id}")

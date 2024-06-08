@@ -1,11 +1,13 @@
 package com.example.contactapi.service;
 
+import com.example.contactapi.exceptions.NotFoundException;
 import com.example.contactapi.model.Role;
 import com.example.contactapi.model.User;
 import com.example.contactapi.repository.UserRepository;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -29,10 +31,10 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
         return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
-
-
+    public User findUserByUserName(String userName) {
+        return userRepository.findByUsername(userName).orElseThrow(() -> new NotFoundException("User not found"));
+    }
 }

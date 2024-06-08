@@ -12,4 +12,5 @@ public class ContactDto {
     private String address;
     private String status;
     private String photoURL;
+    private Integer userId;
 }

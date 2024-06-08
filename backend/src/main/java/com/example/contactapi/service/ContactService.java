@@ -1,12 +1,16 @@
 package com.example.contactapi.service;
 
+import com.example.contactapi.dto.ContactDto;
 import com.example.contactapi.model.Contact;
+import com.example.contactapi.model.User;
 import com.example.contactapi.repository.ContactRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,6 +33,9 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 public class ContactService {
 
     private final ContactRepository contactRepository;
+
+    private final UserService userService;
+    private final ModelMapper modelMapper;
 
     public Page<Contact> getAllContact(int page, int size){
         return contactRepository.findAll(PageRequest.of(page, size, Sort.by("name")));
@@ -75,4 +82,9 @@ public class ContactService {
             throw new RuntimeException("Unable to save image.");
         }
     };
+
+    public Page<ContactDto> getUsersContacts(String userName, int page, int size){
+        User user = userService.findUserByUserName(userName);
+        return contactRepository.findAllByUser(user, PageRequest.of(page, size, Sort.by("name"))).map(contact -> modelMapper.map(contact, ContactDto.class));
+    }
 }

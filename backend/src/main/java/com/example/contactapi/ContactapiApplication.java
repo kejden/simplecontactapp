@@ -25,21 +25,21 @@ public class ContactapiApplication {
 		return new ModelMapper();
 	}
 
-//	@Bean
-//	CommandLineRunner run(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncoder){
-//		return args -> {
-//				if(roleRepository.findByAuthority("ADMIN").isPresent()) return;
-//				Role adminRole = roleRepository.save(new Role("ADMIN"));
-//				roleRepository.save(new Role("USER"));
-//
-//				Set<Role> roles = new HashSet<>();
-//				roles.add(adminRole);
-//
-//				User admin = new User(0, "", passwordEncoder.encode(""), roles);
-//
-//				userRepository.save(admin);
-//		};
-//	}
+	@Bean
+	CommandLineRunner run(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncoder){
+		return args -> {
+				if(roleRepository.findByAuthority("ADMIN").isPresent()) return;
+				Role adminRole = roleRepository.save(new Role("ADMIN"));
+				roleRepository.save(new Role("USER"));
+
+				Set<Role> roles = new HashSet<>();
+				roles.add(adminRole);
+
+				User admin = new User(0, "admin", passwordEncoder.encode("password"), roles);
+
+				userRepository.save(admin);
+		};
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(ContactapiApplication.class, args);

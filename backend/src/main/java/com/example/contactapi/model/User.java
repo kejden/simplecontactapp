@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -20,7 +19,7 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_id")
-    private Integer userId;
+    private Integer id;
 
     @Column(unique = true)
     private String username;
@@ -43,8 +42,8 @@ public class User implements UserDetails {
         this.authorities = new HashSet<Role>();
     }
 
-    public User(Integer userId, String username, String password, Set<Role> authorities) {
-        this.userId = userId;
+    public User(Integer id, String username, String password, Set<Role> authorities) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.authorities = authorities;
