@@ -7,10 +7,8 @@ interface Props {
 }
 
 const Header = ({ toggleModal, numOfContacts }: Props) => {
-  // const userName = localStorage.getItem('user');
   const userName = localStorage.getItem('user') ? localStorage.getItem('user') : null;
   const navigate = useNavigate();
-  // console.log(localStorage.getItem('user'));
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');

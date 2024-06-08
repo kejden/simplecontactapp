@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { getContacts, saveContact, updatePhoto } from "./api/ContactService";
 import Header from "./components/Header";
-import { Routes, Route, Navigate, Location } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import ContactList from "./components/ContactList";
 import ContactDetail from "./components/ContactDetail";
 import Register from "./components/Register"
 import Login from "./components/Login"
+import { useNavigate } from "react-router-dom";
 
 interface ContactData {
   totalElements: number;
@@ -37,13 +38,13 @@ function App() {
     numberOfElements: 0,
     pageable: {},
   });
+  const navigate = useNavigate();
 
   const getAllContacts = async (page: number = 0, size: number = 10) => {
     try {
       setCurrentPage(page);
       const { data } = await getContacts(page, size);
       setData(data);
-      // console.log(data);
     } catch (error) {
       console.error(error);
     }
@@ -61,45 +62,43 @@ function App() {
   const handleNewContact = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      // console.log("Submitting contact:", values);
-      const response = await saveContact(values);
-      const contact = response.data;
-
-      // console.log("Contact saved:", contact);
+      const { data: newContact } = await saveContact(values);
+      setData(prevData => ({
+        ...prevData,
+        content: [newContact, ...prevData.content],
+      }));
 
       const formData = new FormData();
-      formData.append("id", contact.id);
-      formData.append("photo", file as Blob, file?.name || "");
-
-      // console.log("Uploading photo...");
-      await updatePhoto(formData);
-
+      formData.append('id', newContact.id);
+      formData.append('photo', file as Blob, file?.name || '');
+      const { data: photoURL } = await updatePhoto(formData);
+      setData(prevData => ({
+        ...prevData,
+        content: prevData.content.map(contact =>
+          contact.id === newContact.id ? { ...newContact, photoURL } : contact
+        ),
+      }));
       setValues({
-        name: "",
-        email: "",
-        phone: "",
-        address: "",
-        title: "",
-        status: "",
+        name: '',
+        email: '',
+        phone: '',
+        address: '',
+        title: '',
+        status: '',
       });
       setFile(undefined);
-      fileRef.current.value = null;
-
+      fileRef.current.value = '';
       toggleModal(false);
-
-      getAllContacts();
+      navigate("/")
+      console.log(data);
     } catch (error) {
       console.error(error);
     }
-  };
+  } 
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValues({ ...values, [event.target.name]: event.target.value });
   };
-
-  useEffect(() => {
-    getAllContacts();
-  }, []);
 
   const toggleModal = (show: boolean) => {
     if (modalRef.current) {
@@ -110,7 +109,6 @@ function App() {
   const updateContact = async (contact: ContactData) => {
     try{
       const {data} = await saveContact(contact);
-      // console.log(data)
     }catch(error){
       console.error(error);
     }
@@ -118,7 +116,6 @@ function App() {
 
   const updateImage = async (formData: FormData) => {
     try {
-      // console.log("blebleble");
       const { data:photoURL } = await updatePhoto(formData);
       console.log(data)
     } catch (error) {
@@ -126,7 +123,9 @@ function App() {
     } 
   };
 
-  
+  useEffect(() => {
+    getAllContacts();
+  }, [data.content]);
 
   return (
     <>

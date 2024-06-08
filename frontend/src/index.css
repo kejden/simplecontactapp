@@ -696,3 +696,90 @@ input[type=file]::file-selector-button:hover {
   .register-btn:hover {
 	background-color: #218838;
   }
+
+
+  .contact__container {
+	position: relative;
+	margin-bottom: 10px;
+	display: inline-block; /* Ensures the container only takes up the necessary width */
+	width: 100%; /* Ensures the container takes up the full width of its parent */
+  }
+  
+  .contact__item {
+	width: 100%;
+	background-color: #ecf1f1;
+	padding: 0.88rem;
+	border-radius: var(--radius-5);
+	cursor: pointer;
+	min-height: max-content;
+	position: relative; /* Add this */
+  }
+
+  .delete{
+	background-color: red;
+  }
+
+  .delete:hover{
+	background-color: hsl(0, 91%, 75%);
+  }
+
+  .contact__item:hover .delete__button{
+	background-color: red;
+  }
+  
+  .delete__button {
+	display: none;
+	background: none;
+	border: none;
+	cursor: pointer;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	width: auto;
+	height: auto;
+	padding: 5px;
+	border-radius: 15%;
+  }
+  
+  
+  .delete__button i {
+	font-size: 1.5rem;
+	color: #ffffff;
+  }
+  
+  .contact__item:hover .delete__button {
+	display: inline;
+  }
+  
+  .contact__header {
+	display: flex;
+	align-items: center;
+  }
+  
+  .contact__image {
+	margin-right: 10px;
+  }
+  
+  .contact__details {
+	display: flex;
+	flex-direction: column;
+  }
+  
+  .contact_name {
+	font-weight: bold;
+	margin: 0;
+  }
+  
+  .contact_title {
+	margin: 0;
+	color: #666;
+  }
+  
+  .contact__body {
+	display: flex;
+	flex-direction: column;
+  }
+  
+  .contact__body p {
+	margin: 5px 0;
+  }

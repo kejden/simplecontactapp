@@ -16,11 +16,11 @@ interface Contact {
 }
 
 export async function saveContact(contact: Contact) {
-  return await axios.post('/contacts', contact);
+  return await axios.post('/contacts', {username: localStorage.getItem('user'), contact: contact});
 }
 
 export async function getContacts(page: number = 0, size: number = 10) {
-  return await axios.get(`/contacts?page=${page}&size=${size}`);
+  return await axios.get(`/contacts?userName=${localStorage.getItem('user')}&page=${page}&size=${size}`);
 }
 
 export async function getContact(id: string) {
@@ -29,10 +29,6 @@ export async function getContact(id: string) {
 
 export async function updateContact(contact: Contact) {
   return await axios.post('/contacts', contact);
-}
-
-export async function deleteContact(id: string) {
-  return await axios.delete(`/contacts/${id}`);
 }
 
 export async function updatePhoto(formData: FormData) {
@@ -57,8 +53,7 @@ export async function loginUser(username: string, password: string) {
     headers:{
       Authorization:''
     }
-  });
-  // console.log(response.data);
+  }); 
   const user = response.data.user.username;
   const token = response.data.jwt;
   if (token) {  

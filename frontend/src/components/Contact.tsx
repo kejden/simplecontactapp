@@ -1,5 +1,7 @@
-import React from "react";
+import React, {useEffect,useState} from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 interface Props {
   contact: {
@@ -16,11 +18,22 @@ interface Props {
 }
 
 const Contact = ({ contact }: Props) => {
+  const [image, setImage] = useState('');
+  const navigate = useNavigate();
+  const getImage = async () => { 
+    const response = await axios.get(contact.photoURL, {responseType: 'blob'});
+    setImage(URL.createObjectURL(response.data));
+  };
+
+  useEffect(() => {
+    getImage()
+  },[]);
+
   return (
     <Link to={`/contacts/${contact.id}`} className="contact__item">
       <div className="contact__header">
         <div className="contact__image">
-          <img src={contact.photoURL} alt={contact.name} />
+          <img src={image} alt={contact.name} />
         </div>
         <div className="contact__details">
           <p className="contact_name">
