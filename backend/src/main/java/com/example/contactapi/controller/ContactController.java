@@ -62,6 +62,16 @@ public class ContactController {
         return ResponseEntity.ok().body(contactDto);
     }
 
+    @PutMapping("/id")
+    public ResponseEntity<ContactDto> updateContact(@PathVariable(value = "id") String id,@RequestBody CreateContactDto createContactDto){
+        try {
+            Contact updated = contactService.updateContact(id, modelMapper.map(createContactDto, Contact.class));
+            return ResponseEntity.ok(modelMapper.map(updated, ContactDto.class));
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteContact(@PathVariable(value = "id") String id){
         Optional<Contact> contact = Optional.ofNullable(contactService.getContact(id));

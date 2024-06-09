@@ -20,7 +20,7 @@ public class Contact {
     @UuidGenerator
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id", unique = true, updatable = false)
-    private String  id;
+    private String id;
     private String name;
     private String email;
     private String title;
