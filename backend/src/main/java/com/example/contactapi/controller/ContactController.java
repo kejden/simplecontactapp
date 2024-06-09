@@ -5,7 +5,6 @@ import com.example.contactapi.dto.ContactDto;
 import com.example.contactapi.dto.CreateContactDto;
 import com.example.contactapi.model.Contact;
 import com.example.contactapi.model.User;
-import com.example.contactapi.repository.ContactRepository;
 import com.example.contactapi.service.ContactService;
 import com.example.contactapi.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +32,6 @@ public class ContactController {
 
     private final ContactService contactService;
     private final UserService userService;
-    private final ContactRepository contactRepository;
 
     private ContactDto convertToDto(Contact contact) {
         return modelMapper.map(contact, ContactDto.class);
@@ -44,7 +42,7 @@ public class ContactController {
         User user = userService.findUserByUserName(createContactDto.getUsername());
         Contact contactRequest = modelMapper.map(createContactDto.getContact(), Contact.class);
         contactRequest.setUser(user);
-        Contact savedContact = contactRepository.save(contactRequest);
+        Contact savedContact = contactService.createContact(contactRequest);
         ContactDto contactResponse = modelMapper.map(savedContact, ContactDto.class);
         return ResponseEntity.created(URI.create("/contacts/" + contactResponse.getId())).body(contactResponse);
     }

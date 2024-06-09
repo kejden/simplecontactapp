@@ -25,6 +25,12 @@ public class ContactapiApplication {
 		return new ModelMapper();
 	}
 
+	@Value("${admin.username}")
+	private String adminUsername;
+
+	@Value("${admin.password}")
+	private String adminPassword;
+
 	@Bean
 	CommandLineRunner run(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncoder){
 		return args -> {
@@ -35,7 +41,7 @@ public class ContactapiApplication {
 				Set<Role> roles = new HashSet<>();
 				roles.add(adminRole);
 
-				User admin = new User(0, "admin", passwordEncoder.encode("password"), roles);
+				User admin = new User(0, adminUsername, passwordEncoder.encode(adminPassword), roles);
 
 				userRepository.save(admin);
 		};
