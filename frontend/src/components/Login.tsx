@@ -13,7 +13,7 @@ const Login = () => {
         event.preventDefault();
         try{
             await loginUser(user.username, user.password);
-            navigate('/contacts');
+            navigate('/');
         }catch(error){
             console.error(error);
         }
